@@ -64,7 +64,7 @@ const data = [
     const btnWrapper = document.createElement('div');
     btnWrapper.classList.add('btn-wrapper');
 
-    const btns = params.map(({ className, type, text }) => {
+    const btns = params.map(({className, type, text}) => {
       const button = document.createElement('button');
       button.type = type;
       button.textContent = text;
@@ -74,7 +74,7 @@ const data = [
 
     btnWrapper.append(...btns);
 
-    return { btnWrapper, btns };
+    return {btnWrapper, btns};
   };
 
   const createTable = () => {
@@ -192,7 +192,7 @@ const data = [
     };
   };
 
-  const createRow = ({ name: firstName, surname, phone }) => {
+  const createRow = ({name: firstName, surname, phone}) => {
     const tr = document.createElement('tr');
 
     const tdDel = document.createElement('td');
@@ -248,7 +248,7 @@ const data = [
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
 
-    const { list, logo, btnAdd, formOverlay } = phoneBook;
+    const {list, logo, btnAdd, formOverlay} = phoneBook;
 
     const allRow = renderContacts(list, data);
 
