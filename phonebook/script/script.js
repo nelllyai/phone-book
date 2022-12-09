@@ -189,6 +189,7 @@ const data = [
       logo,
       btnAdd: buttonGroup.btns[0],
       formOverlay: form.overlay,
+      form: form.form,
     };
   };
 
@@ -248,19 +249,23 @@ const data = [
     const app = document.querySelector(selectorApp);
     const phoneBook = renderPhoneBook(app, title);
 
-    const {list, logo, btnAdd, formOverlay} = phoneBook;
+    const {list, logo, btnAdd, formOverlay, form} = phoneBook;
 
     const allRow = renderContacts(list, data);
 
     hoverRow(allRow, logo);
 
-    const objEvent = {
-      handleEvent() {
-        formOverlay.classList.add('is-visible');
-      },
-    };
+    btnAdd.addEventListener('click', () => {
+      formOverlay.classList.add('is-visible');
+    });
 
-    btnAdd.addEventListener('click', objEvent);
+    form.addEventListener('click', event => {
+      event.stopPropagation();
+    });
+
+    formOverlay.addEventListener('click', () => {
+      formOverlay.classList.remove('is-visible');
+    });
   };
 
   window.phoneBookInit = init;
