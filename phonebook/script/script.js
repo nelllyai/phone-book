@@ -91,6 +91,7 @@ const data = [
         <th></th>
       </tr>
     `);
+    table.thead = thead;
 
     const tbody = document.createElement('tbody');
 
@@ -185,6 +186,7 @@ const data = [
     app.append(header, main, footer);
 
     return {
+      tableHead: table.thead,
       list: table.tbody,
       logo,
       btnAdd: buttonGroup.btns[0],
@@ -251,6 +253,7 @@ const data = [
     const phoneBook = renderPhoneBook(app, title);
 
     const {
+      tableHead,
       list,
       logo,
       btnAdd,
@@ -283,6 +286,34 @@ const data = [
       if (e.target.closest('.del-icon')) {
         e.target.closest('.contact').remove();
       }
+    });
+
+    const thName = tableHead.querySelectorAll('th')[1];
+    thName.addEventListener('click', () => {
+      const sortedData = data.slice(0);
+
+      sortedData.sort((firstContact, secondContact) => {
+        if (firstContact.name > secondContact.name) return 1;
+        return -1;
+      });
+
+      list.innerHTML = '';
+      const allRow = renderContacts(list, sortedData);
+      hoverRow(allRow, logo);
+    });
+
+    const thSurname = tableHead.querySelectorAll('th')[2];
+    thSurname.addEventListener('click', () => {
+      const sortedData = data.slice(0);
+
+      sortedData.sort((firstContact, secondContact) => {
+        if (firstContact.surname > secondContact.surname) return 1;
+        return -1;
+      });
+
+      list.innerHTML = '';
+      const allRow = renderContacts(list, sortedData);
+      hoverRow(allRow, logo);
     });
   };
 
