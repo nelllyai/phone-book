@@ -243,15 +243,17 @@
   const sortByName = (tableHead, list, logo) => {
     const thName = tableHead.querySelectorAll('th')[1];
     thName.addEventListener('click', () => {
-      const sortedData = data.slice(0);
+      const sortedData = getStorage('contacts');
 
       sortedData.sort((firstContact, secondContact) => {
         if (firstContact.name > secondContact.name) return 1;
         return -1;
       });
 
+      localStorage.setItem('contacts', JSON.stringify([...sortedData]));
+
       list.innerHTML = '';
-      const allRow = renderContacts(list, sortedData);
+      const allRow = renderContacts(list, getStorage('contacts'));
       hoverRow(allRow, logo);
     });
   };
@@ -259,15 +261,17 @@
   const sortBySurname = (tableHead, list, logo) => {
     const thSurname = tableHead.querySelectorAll('th')[2];
     thSurname.addEventListener('click', () => {
-      const sortedData = data.slice(0);
+      const sortedData = getStorage('contacts');
 
       sortedData.sort((firstContact, secondContact) => {
         if (firstContact.surname > secondContact.surname) return 1;
         return -1;
       });
 
+      localStorage.setItem('contacts', JSON.stringify([...sortedData]));
+
       list.innerHTML = '';
-      const allRow = renderContacts(list, sortedData);
+      const allRow = renderContacts(list, getStorage('contacts'));
       hoverRow(allRow, logo);
     });
   };
