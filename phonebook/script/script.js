@@ -240,42 +240,6 @@
     });
   };
 
-  const sortByName = (tableHead, list, logo) => {
-    const thName = tableHead.querySelectorAll('th')[1];
-    thName.addEventListener('click', () => {
-      const sortedData = getStorage('contacts');
-
-      sortedData.sort((firstContact, secondContact) => {
-        if (firstContact.name > secondContact.name) return 1;
-        return -1;
-      });
-
-      localStorage.setItem('contacts', JSON.stringify([...sortedData]));
-
-      list.innerHTML = '';
-      const allRow = renderContacts(list, getStorage('contacts'));
-      hoverRow(allRow, logo);
-    });
-  };
-
-  const sortBySurname = (tableHead, list, logo) => {
-    const thSurname = tableHead.querySelectorAll('th')[2];
-    thSurname.addEventListener('click', () => {
-      const sortedData = getStorage('contacts');
-
-      sortedData.sort((firstContact, secondContact) => {
-        if (firstContact.surname > secondContact.surname) return 1;
-        return -1;
-      });
-
-      localStorage.setItem('contacts', JSON.stringify([...sortedData]));
-
-      list.innerHTML = '';
-      const allRow = renderContacts(list, getStorage('contacts'));
-      hoverRow(allRow, logo);
-    });
-  };
-
   const modalControl = (btnAdd, formOverlay) => {
     const openModal = () => {
       formOverlay.classList.add('is-visible');
@@ -335,6 +299,30 @@
     });
   };
 
+  const sortByField = (field, list, logo) => {
+    const sortedData = getStorage('contacts');
+
+    sortedData.sort((c1, c2) => c1[field] > c2[field] ? 1 : -1);
+
+    localStorage.setItem('contacts', JSON.stringify([...sortedData]));
+
+    list.innerHTML = '';
+    const allRow = renderContacts(list, getStorage('contacts'));
+    hoverRow(allRow, logo);
+  };
+
+  const tableControl = (tableHead, list, logo) => {
+    tableHead.addEventListener('click', e => {
+      const header = e.target.closest('th').textContent;
+
+      if (header === 'Имя') {
+        sortByField('name', list, logo);
+      } else if (header === 'Фамилия') {
+        sortByField('surname', list, logo);
+      }
+    })
+  }
+
   const init = (selectorApp, title) => {
     const app = document.querySelector(selectorApp);
 
@@ -354,9 +342,7 @@
     const {closeModal} = modalControl(btnAdd, formOverlay);
     deleteControl(btnDel, list);
     formControl(form, list, logo, closeModal);
-
-    sortByName(tableHead, list, logo);
-    sortBySurname(tableHead, list, logo);
+    tableControl(tableHead, list, logo);
   };
 
   window.phoneBookInit = init;
