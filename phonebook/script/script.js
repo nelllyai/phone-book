@@ -1,31 +1,18 @@
 'use strict';
 
-const data = [
-  {
-    name: 'Иван',
-    surname: 'Петров',
-    phone: '+79514545454',
-  },
-  {
-    name: 'Игорь',
-    surname: 'Семёнов',
-    phone: '+79999999999',
-  },
-  {
-    name: 'Семён',
-    surname: 'Иванов',
-    phone: '+79800252525',
-  },
-  {
-    name: 'Мария',
-    surname: 'Попова',
-    phone: '+79876543210',
-  },
-];
-
 {
-  const addContactData = contact => {
-    data.push(contact);
+  const getStorage = key => JSON.parse(localStorage.getItem(key)) || [];
+
+  const setStorage = (key, obj) => {
+    const data = getStorage(key);
+    data.push(obj);
+    localStorage.setItem(key, JSON.stringify(data));
+  };
+
+  const removeStorage = phone => {
+    const data = getStorage('contacts');
+    data.splice(data.findIndex(contact => contact.phone === phone), 1);
+    localStorage.setItem('contacts', JSON.stringify(data));
   };
 
   const createContainer = () => {
@@ -317,17 +304,18 @@ const data = [
 
     list.addEventListener('click', e => {
       if (e.target.closest('.del-icon')) {
-        e.target.closest('.contact').remove();
+        const contact = e.target.closest('.contact');
+        removeStorage(contact.querySelector('a').textContent);
+        contact.remove();
       }
     });
   };
 
   const addContactPage = (contact, list) => {
     list.append(createRow(contact));
-    // hoverRow(allRow, logo);
   };
 
-  const formControl = (form, list, closeModal) => {
+  const formControl = (form, list, logo, closeModal) => {
     form.addEventListener('submit', e => {
       e.preventDefault();
       const formData = new FormData(e.target);
@@ -335,7 +323,9 @@ const data = [
       const newContact = Object.fromEntries(formData);
 
       addContactPage(newContact, list);
-      addContactData(newContact);
+      setStorage('contacts', newContact);
+      const newTr = list.querySelector('tr:last-child');
+      hoverRow([newTr], logo);
       form.reset();
       closeModal();
     });
@@ -354,12 +344,12 @@ const data = [
       form,
     } = renderPhoneBook(app, title);
 
-    const allRow = renderContacts(list, data);
+    const allRow = renderContacts(list, getStorage('contacts'));
 
     hoverRow(allRow, logo);
     const {closeModal} = modalControl(btnAdd, formOverlay);
     deleteControl(btnDel, list);
-    formControl(form, list, closeModal);
+    formControl(form, list, logo, closeModal);
 
     sortByName(tableHead, list, logo);
     sortBySurname(tableHead, list, logo);
