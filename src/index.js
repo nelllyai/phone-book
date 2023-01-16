@@ -1,8 +1,11 @@
-import * as storage from './modules/serviceStorage.js';
-import {renderPhoneBook, renderContacts} from './modules/render.js';
+import * as storage from './script/serviceStorage';
+import {renderPhoneBook, renderContacts} from './script/render';
 import {modalControl, deleteControl,
-  formControl, tableControl} from './modules/control.js';
-import hoverRow from './modules/decorator.js';
+  formControl, tableControl} from './script/control';
+import hoverRow from './script/decorator';
+
+import './index.html';
+import './scss/index.scss';
 
 {
   const init = (selectorApp, title) => {
@@ -29,3 +32,7 @@ import hoverRow from './modules/decorator.js';
 
   window.phoneBookInit = init;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  phoneBookInit('#app', 'Нелли');
+});

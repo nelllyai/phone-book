@@ -1,7 +1,7 @@
-import * as storage from './serviceStorage.js';
-import {renderContacts} from './render.js';
-import {createRow} from './createElements.js';
-import hoverRow from './decorator.js';
+import * as storage from './serviceStorage';
+import {renderContacts} from './render';
+import {createRow} from './createElements';
+import hoverRow from './decorator';
 
 export const modalControl = (btnAdd, formOverlay) => {
   const openModal = () => {
